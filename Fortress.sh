@@ -29,6 +29,13 @@
 ###################################################################################
 ###################################################################################
 #
+#Version 2.00
+#
+#Disabled OSSEC installation, will be removed in next update, see Fortress-with-ossec if ossec is desired
+#
+#Minor bugifxes
+#
+#
 #Version 1.02
 #
 #Features: Auto updates and installs ClamAV, PortSentry, OSSEC, and UFW
@@ -85,13 +92,13 @@ force:
 	echo "Set ClamAV Email Alert Recipient"
 	read emailadd
 
-#Install the apt-get repository key:
-	apt-key adv --fetch-keys http://ossec.wazuh.com/repos/apt/conf/ossec-key.gpg.key
+#Install the ossec apt-get repository key:
+	#apt-key adv --fetch-keys http://ossec.wazuh.com/repos/apt/conf/ossec-key.gpg.key
 
-#Add the repository :
-	echo 'deb http://ossec.wazuh.com/repos/apt/ubuntu precise main' >> /etc/apt/sources.list
+#Add the ossec repository :
+	#echo 'deb http://ossec.wazuh.com/repos/apt/ubuntu precise main' >> /etc/apt/sources.list
 
-#Update the repository and install prereqs:
+#Update the repository and install pre-reqs:
 	apt-get update
 	apt-get -y upgrade
 	apt-get -y install apache2 php5 nano syslog-summary libapache2-mod-php5 logcheck portsentry syslog-summary python-magic-dbg python-gdbm-dbg python-tk-dbg clamav clamav-daemon ufw
@@ -102,7 +109,7 @@ force:
 
 #Configure PortSentry and Logcheck
 	sed -i 's/BLOCK_TCP="0"/BLOCK_TCP="1"/g' /etc/portsentry/portsentry.conf
-	sed -i 's/SENDMAILTO="logcheck"/SENDMAILTO="ids@barnett-labs.com"/g' /etc/logcheck/logcheck.conf
+	sed -i 's/SENDMAILTO="logcheck"/SENDMAILTO="$emailadd"/g' /etc/logcheck/logcheck.conf
 	sed -i 's/#ATTACKSUBJECT="Security Alerts"/ATTACKSUBJECT="Security Alerts"/g' /etc/logcheck/logcheck.conf
 	sed -i 's/#SECURITYSUBJECT="Security Events"/SECURITYSUBJECT="Security Events"/g' /etc/logcheck/logcheck.conf
 	sed -i 's/#EVENTSSUBJECT="System Events"/EVENTSSUBJECT="System Events"/g' /etc/logcheck/logcheck.conf
@@ -147,25 +154,25 @@ force:
 
 
 #Install OSSEC HIDS server/manager:
-	apt-get -y install ossec-hids
+	#apt-get -y install ossec-hids
 
 #Install OSSEC Web UI
-	wget https://barnett-labs.com/Software/ossec-wui-0.3.tar.gz
-	tar -zxvf ossec-wui-0.3.tar.gz
-	mkdir /var/www/htdocs
-	mkdir /var/www/htdocs/ossec-wui
-	mv ossec-wui-0.3 /var/www/htdocs/ossec-wui
+	#wget https://barnett-labs.com/Software/ossec-wui-0.3.tar.gz
+	#tar -zxvf ossec-wui-0.3.tar.gz
+	#mkdir /var/www/htdocs
+	#mkdir /var/www/htdocs/ossec-wui
+	#mv ossec-wui-0.3 /var/www/htdocs/ossec-wui
 
 #To get the username that Apache is running
-	echo " "
-	echo " "
-	echo "Use the following username:"
-	ps auwx |grep apache | cut -d " " -f 1 | grep -v root | uniq
-	echo " "
-	echo " "
+	#echo " "
+	#echo " "
+	#echo "Use the following username:"
+	#ps auwx |grep apache | cut -d " " -f 1 | grep -v root | uniq
+	#echo " "
+	#echo " "
 
 #Adding access to the ossec dir:
-	usermod -a -G ossec www-data
+	#usermod -a -G ossec www-data
 
 #Fixing ./tmp permissions
 	chmod 1777 /tmp/
@@ -175,7 +182,7 @@ force:
 
 #Configure Web UI
 #cd /var/www/htdocs/ossec-wui(Defunct)
-	/var/www/htdocs/ossec-wui/ossec-wui-0.3/setup.sh
+	#/var/www/htdocs/ossec-wui/ossec-wui-0.3/setup.sh
 
 #Enable UFW
 	ufw enable
