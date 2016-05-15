@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #Created by Barnett Labs
-#website: https://barnett-labs.com
+#website: http://barnett-labs.com
 #email: info@barnett-labs.com
 #
 ###################################################################################
@@ -28,6 +28,12 @@
 #
 ###################################################################################
 ###################################################################################
+#
+#
+#Version 2.01
+#
+#Removed OSSEC installation, see Fortress-with-Ossec if OSSEC is desired
+#
 #
 #Version 2.00
 #
@@ -92,16 +98,10 @@ force:
 	echo "Set ClamAV Email Alert Recipient"
 	read emailadd
 
-#Install the ossec apt-get repository key:
-	#apt-key adv --fetch-keys http://ossec.wazuh.com/repos/apt/conf/ossec-key.gpg.key
-
-#Add the ossec repository :
-	#echo 'deb http://ossec.wazuh.com/repos/apt/ubuntu precise main' >> /etc/apt/sources.list
-
 #Update the repository and install pre-reqs:
 	apt-get update
 	apt-get -y upgrade
-	apt-get -y install apache2 php5 nano syslog-summary libapache2-mod-php5 logcheck portsentry syslog-summary python-magic-dbg python-gdbm-dbg python-tk-dbg clamav clamav-daemon ufw
+	apt-get -y install nano syslog-summary logcheck portsentry syslog-summary python-magic-dbg python-gdbm-dbg python-tk-dbg clamav clamav-daemon ufw
 	/etc/init.d/apache2 restart
 
 #Rebuild locale info, this eliminates errors in logs
@@ -151,38 +151,6 @@ force:
 	ufw allow 80
 	ufw allow 443
 	ufw allow 1514
-
-
-#Install OSSEC HIDS server/manager:
-	#apt-get -y install ossec-hids
-
-#Install OSSEC Web UI
-	#wget https://barnett-labs.com/Software/ossec-wui-0.3.tar.gz
-	#tar -zxvf ossec-wui-0.3.tar.gz
-	#mkdir /var/www/htdocs
-	#mkdir /var/www/htdocs/ossec-wui
-	#mv ossec-wui-0.3 /var/www/htdocs/ossec-wui
-
-#To get the username that Apache is running
-	#echo " "
-	#echo " "
-	#echo "Use the following username:"
-	#ps auwx |grep apache | cut -d " " -f 1 | grep -v root | uniq
-	#echo " "
-	#echo " "
-
-#Adding access to the ossec dir:
-	#usermod -a -G ossec www-data
-
-#Fixing ./tmp permissions
-	chmod 1777 /tmp/
-#May not be needed
-	chgrp www-data /tmp/
-	apache2ctl restart
-
-#Configure Web UI
-#cd /var/www/htdocs/ossec-wui(Defunct)
-	#/var/www/htdocs/ossec-wui/ossec-wui-0.3/setup.sh
 
 #Enable UFW
 	ufw enable
