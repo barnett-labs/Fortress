@@ -1,5 +1,10 @@
 # Fortress
 
+Execute the following command if you get an interpretor error.
+
+    1. sed -i -e 's/\r$//' Fortress.sh
+    
+
 This script will auto install and configure:
 
 	1. PortSentry:	The Sentry tools provide host-level security services for the Unix platform. PortSentry, Logcheck/LogSentry, and HostSentry protect against portscans,
@@ -29,4 +34,11 @@ It will also install and configure the minor required dependencies:
 The script will also pull two files furrently on barnett-labs.com for the install (future pull from github)
 
 	1. clamav-scan.sh 	#Pre-configured virus scan with email report. 
-	2. clamd.conf  		#Pre-configured .conf file to streamline installation process.
+	2. clamd.conf  		#Pre-configured .conf file to streamline installation processinterpreter
+
+
+Instructions
+
+    1. wget http://barnett-labs.com/Software/Fortress.sh
+    2. chmod 700 Fortress.sh
+    3. ./Fortress.sh
